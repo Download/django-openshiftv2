@@ -1,0 +1,17 @@
+﻿#!/bin/bash
+
+if [ ! -f "${HOME}.env/user_vars/DJANGO_SECRET_KEY" ]; then
+	echo "Generating ${HOME}.env/user_vars/DJANGO_SECRET_KEY"
+	python "${OPENSHIFT_REPO_DIR}.openshift/lib/secrets.py" > "${HOME}.env/user_vars/DJANGO_SECRET_KEY"
+fi
+
+if [ ! -f "${HOME}.env/user_vars/OPENSHIFT_PYTHON_WSGI_APPLICATION" ]; then
+	echo "Registering app/wsgi.py in ${HOME}.env/user_vars/OPENSHIFT_PYTHON_WSGI_APPLICATION"
+	echo "app/wsgi.py" > "${HOME}.env/user_vars/OPENSHIFT_PYTHON_WSGI_APPLICATION"
+fi
+
+echo "Executing 'python ${OPENSHIFT_REPO_DIR}manage.py migrate --noinput'"
+python "${OPENSHIFT_REPO_DIR}manage.py" migrate --noinput
+
+echo "Executing 'python ${OPENSHIFT_REPO_DIR}manage.py collectstatic --noinput'"
+python ${OPENSHIFT_REPO_DIR}manage.py collectstatic --noinput
