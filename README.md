@@ -82,7 +82,25 @@ Successfully installed mysqlclient-1.3.7
 
 9. GIT [clone](https://git-scm.com/docs/git-clone) this project: `git clone git@github.com:Download/ba.git` (will create a folder `ba` within `env`)
 
-10. Install the project's dependencies: `pip install -r requirements.txt`
+```sh
+(env) c:\ws\env>git clone git@github.com:Download/ba.git
+Cloning into 'ba'...
+remote: Counting objects: 35, done.
+Receiving objects: 100% (35/35), 8.48 KiB |
+remote: Compressing objects: 100% (27/27), done.
+remote: Total 35 (delta 0), reused 32 (delta 0), pack-reused 0
+Checking connectivity... done.
+```
+
+10. Move into the project folder: `cd ba`
+
+```sh
+(env) c:\ws\env>cd ba
+
+(env) c:\ws\env\ba>
+```
+
+11. Install the project's dependencies: `pip install -r requirements.txt`
 
 ```sh
 (env) c:\ws\env\ba>pip install -r requirements.txt
@@ -93,13 +111,13 @@ Installing collected packages: Django
 Successfully installed Django-1.8.14
 ```
 
-11. Make sure a DB named `ba` exists in MySQL (assuming you have a mysql user named `root` with password `secret`)
+12. Make sure a DB named `ba` exists in MySQL (assuming you have a mysql user named `root` with password `secret`)
 
 ```sh
 (env) c:\ws\env\ba>mysql -uroot -psecret -e "CREATE DATABASE IF NOT EXISTS `ba` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
 ```
 
-12. Run `migrate` to create the initial schema
+13. Run `python manage.py migrate` to create the initial schema
 
 ```sh
 (env) c:\ws\env\ba>python manage.py migrate
@@ -124,18 +142,18 @@ Running migrations:
   Applying sessions.0001_initial... OK
 ```
 
-13. Create the admin user
+14. Create the admin user
 
 ```sh
 (env) c:\ws\env\ba>python manage.py createsuperuser
-Username (leave blank to use 'frank'): admin
+Username (leave blank to use 'user'): admin
 Email address:
 Password:
 Password (again):
 Superuser created successfully.
 ```
 
-14. Start the server
+15. Start the server
 
 ```sh
 (env) c:\ws\env\ba>python manage.py runserver
