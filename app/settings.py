@@ -24,7 +24,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'h&q79(hr^4w&)wyj=z2&tw73#tn2&*=@inou9dfu2_-&xd5bjv');
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True # os.getenv('DJANGO_SECRET_KEY', 'True') == 'True'
+DEBUG = os.getenv('DJANGO_SECRET_KEY', 'True') == 'True'
 
 ALLOWED_HOSTS = [
 	'ba-catwalk.rhcloud.com',
@@ -38,6 +38,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = (
+	'home',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

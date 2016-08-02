@@ -169,11 +169,14 @@ password `secret`:
 
 ```sh
 (env) c:\ws\env\ba>python createadminuser.py
+============================================================
 Creating admin user. Please note these credentials.
+------------------------------------------------------------
 USERNAME:  admin
 PASSWORD:  secret
+------------------------------------------------------------
 User admin created succesfully.
-```
+============================================================```
 
 ## Start the server
 * Run `python manage.py runserver`
