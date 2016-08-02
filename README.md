@@ -186,15 +186,67 @@ Quit the server with CTRL-BREAK.
 
 # Setting up the OpenShift application
 
-1. Create a Python 3.3 application named `ba` with Scaling set to `Scale with web traffic`.
+Start by creating a Python 3.3 application named `ba` with Scaling set to `Scale with web traffic`. Once it completes, deploy this application to it by following the steps:
 
-2. Copy the `Source Code` URL from the created application and add it as a remote named `openshift` to your GIT repo (`ba`)
+![screenshot](http://i.imgur.com/4Phj1y7.png)
 
-3. Force-push this project's code to that remote
+1. Copy the `Source Code` URL from the created application and add it as a remote named `openshift` to your GIT repo (`ba`). Then force-push this project's code to that remote.
 
 ```sh
-git push --force --progress "openshift" master:master
-```
+(env) c:\ws\env\ba>git push --force --progress "openshift" master:master
+Counting objects: 61, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (53/53), done.
+Writing objects: 100% (61/61), 12.04 KiB | 0 bytes/s, done.
+Total 61 (delta 16), reused 31 (delta 0)
+remote: Not stopping cartridge python because hot deploy is enabled
+remote: Syncing git content to other proxy gears
+remote: Building git ref 'master', commit 8dd0bc2
+remote: Activating virtenv
+remote: Checking for pip dependency listed in requirements.txt file..
+remote: The directory '/var/lib/openshift/57a083990c1e66662e000159/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+remote: The directory '/var/lib/openshift/57a083990c1e66662e000159/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+remote: Collecting Django==1.8.14 (from -r /var/lib/openshift/57a083990c1e66662e000159/app-root/runtime/repo/requirements.txt (line 1))
+remote:   Downloading http://mirror1.ops.rhcloud.com/mirror/python/web/packages/12/13/66eeba22d40f86d6cecc5a12784ae84b53f2ba171c448b1646ede25a99cd/Django-1.8.14-py2.py3-none-any.whl (6.2MB)
+remote: Collecting mysqlclient==1.3.7 (from -r /var/lib/openshift/57a083990c1e66662e000159/app-root/runtime/repo/requirements.txt (line 2))
+remote:   Downloading http://mirror1.ops.rhcloud.com/mirror/python/web/packages/source/m/mysqlclient/mysqlclient-1.3.7.tar.gz (79kB)
+remote: Installing collected packages: Django, mysqlclient
+remote:   Running setup.py install for mysqlclient: started
+remote:     Running setup.py install for mysqlclient: finished with status 'done'
+remote: Successfully installed Django-1.8.14 mysqlclient
+remote: Running setup.py script..
+remote: running develop
+remote: running egg_info
+remote: creating ba.egg-info
+remote: writing top-level names to ba.egg-info/top_level.txt
+remote: writing dependency_links to ba.egg-info/dependency_links.txt
+remote: writing ba.egg-info/PKG-INFO
+remote: writing manifest file 'ba.egg-info/SOURCES.txt'
+remote: reading manifest file 'ba.egg-info/SOURCES.txt'
+remote: writing manifest file 'ba.egg-info/SOURCES.txt'
+remote: running build_ext
+remote: Creating /var/lib/openshift/57a083990c1e66662e000159/app-root/runtime/dependencies/python/virtenv/venv/lib/python3.3/site-packages/ba.egg-link (link to .)
+remote: Adding ba 1.0 to easy-install.pth file
+remote:
+remote: Installed /var/lib/openshift/57a083990c1e66662e000159/app-root/runtime/repo
+remote: Processing dependencies for ba==1.0
+remote: Finished processing dependencies for ba==1.0
+remote: Preparing build for deployment
+remote: Deployment id is 17b7602f
+remote: Activating deployment
+remote: Not starting cartridge haproxy because hot deploy is enabled
+remote: /var/lib/openshift/57a083990c1e66662e000159/app-root/runtime/repo/.openshift/action_hooks/deploy: line 1: ﻿#!/usr/bin/env: No such file or directory
+remote: Django and mysqlclient are installed correctly.
+remote: Add the MySQL cartridge, then push the repo again.
+remote: Not starting cartridge python because hot deploy is enabled
+remote: -------------------------
+remote: Git Post-Receive Result: success
+remote: Activation status: success
+remote: Deployment completed with status: success
+To ssh://57a083990c1e66662e000159@ba-catwalk.rhcloud.com/~/git/ba.git/
+ + c972bfd...8dd0bc2 master -> master (forced update)
+ ```
+
 
 You will get lots of logging including some failures. That's because we haven't yet added the MySQL cartridge. Normally we would add the MySQL cartridge before pushing, but if we do so, we encounter a bug in OpenShift, so bear with me.
 

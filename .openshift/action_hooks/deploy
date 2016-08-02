@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+﻿#! /bin/bash
 
 if [ -z "${OPENSHIFT_MYSQL_DB_HOST}" ]; then
 	echo "Django and mysqlclient are installed correctly."
