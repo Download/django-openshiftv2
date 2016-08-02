@@ -17,12 +17,21 @@ def admin_exists():
 def create_admin():
 	from django.contrib.auth.models import User
 	password = mysql_pwd();
+	print('')
+	print('============================================================')
 	print('Creating admin user. Please note these credentials.')
+	print('------------------------------------------------------------')
 	print('USERNAME:  admin')
 	print('PASSWORD:  ' + password)
 	User.objects.create_superuser('admin', os.getenv('OPENSHIFT_LOGIN', 'mail@example.com'), password)
+	print('------------------------------------------------------------')
 	print('User admin created succesfully.')
+	print('============================================================')
+	print('')
 
 if __name__ == '__main__':
-	if db_exists() and not admin_exists():
-		create_admin()
+	if db_exists():
+		if not admin_exists():
+			create_admin()
+		else:
+			print('Admin user already exists.');

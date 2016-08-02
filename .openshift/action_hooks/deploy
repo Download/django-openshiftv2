@@ -1,6 +1,13 @@
 ﻿#!/usr/bin/env bash
 
+if [ -z "${OPENSHIFT_MYSQL_DB_HOST}" ]; then
+	echo "Django and mysqlclient are installed correctly."
+	echo "Add the MySQL cartridge, then push the repo again."
+fi
+
 if [ ! -z "${OPENSHIFT_MYSQL_DB_HOST}" ]; then
+	echo "MySQL is installed correctly."
+
 	if [ ! -f "${HOME}.env/user_vars/DJANGO_SECRET_KEY" ]; then
 		echo "Generating ${HOME}.env/user_vars/DJANGO_SECRET_KEY"
 		python "${OPENSHIFT_REPO_DIR}.openshift/lib/secrets.py" > "${HOME}.env/user_vars/DJANGO_SECRET_KEY"
@@ -18,4 +25,6 @@ if [ ! -z "${OPENSHIFT_MYSQL_DB_HOST}" ]; then
 	python "${OPENSHIFT_REPO_DIR}manage.py" collectstatic --noinput
 
 	python "${OPENSHIFT_REPO_DIR}createadminuser.py"
+
+	echo "Deployment completed. Please restart the application for settings to take effect."
 fi
