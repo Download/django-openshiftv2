@@ -1,21 +1,28 @@
 ﻿import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "app.settings")
 
-from django.contrib.auth.models import User
-from django.utils.crypto import get_random_string
+def mysql_pwd():
+	return os.getenv('OPENSHIFT_MYSQL_DB_PASSWORD', 'secret')
+
+def running_on_openshift():
+	return os.getenv('OPENSHIFT_GEAR_NAME', '') != ''
+
+def db_exists():
+	return (mysql_pwd() != 'secret') if running_on_openshift() else True
 
 def admin_exists():
-    return User.objects.filter(username='admin').exists()
+	from django.contrib.auth.models import User
+	return User.objects.filter(username='admin').exists()
 
 def create_admin():
-	chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
-	password = get_random_string(10, chars)
+	from django.contrib.auth.models import User
+	password = mysql_pwd();
 	print('Creating admin user. Please note these credentials.')
 	print('USERNAME:  admin')
 	print('PASSWORD:  ' + password)
-	User.objects.create_superuser('admin', '', password)
+	User.objects.create_superuser('admin', os.getenv('OPENSHIFT_LOGIN', 'mail@example.com'), password)
 	print('User admin created succesfully.')
 
 if __name__ == '__main__':
-	if not admin_exists():
+	if db_exists() and not admin_exists():
 		create_admin()

@@ -44,7 +44,7 @@ Successfully installed virtualenv-15.0.2
 
 ```sh
 c:\ws>virtualenv env
-Using base prefix 'c:\\python\\v3.3.5'
+Using base prefix 'c:\\python\\v3.5.2'
 New python executable in c:\ws\env\Scripts\python.exe
 Installing setuptools, pip, wheel...done.
 ```
@@ -144,6 +144,8 @@ Running migrations:
 
 14. Create the admin user
 
+You can either create the admin user using the Django `createsuperuser` command, as shown below:
+
 ```sh
 (env) c:\ws\env\ba>python manage.py createsuperuser
 Username (leave blank to use 'user'): admin
@@ -151,6 +153,19 @@ Email address:
 Password:
 Password (again):
 Superuser created successfully.
+```
+
+or you can use the `createadminuser.py` script. This script is called on deploy to openshift and
+checks whether an `admin` user already exists. If not, it will create one. On openshift it will
+use the MySQL password as the initial password, on local development environments it will use
+password `secret`:
+
+```sh
+(env) c:\ws\env\ba>python createadminuser.py
+Creating admin user. Please note these credentials.
+USERNAME:  admin
+PASSWORD:  secret
+User admin created succesfully.
 ```
 
 15. Start the server
@@ -166,25 +181,27 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CTRL-BREAK.
 ```
 
+16. Point your browser to http://127.0.0.1:8000/
+
 
 # Setting up the OpenShift application
 
-1. Create a Python 3.3 application
+1. Create a Python 3.3 application named `ba` with Scaling set to `Scale with web traffic`.
 
 2. Copy the `Source Code` URL from the created application and add it as a remote named `openshift` to your GIT repo (`ba`)
 
-2. Push this project's code to that remote
+3. Force-push this project's code to that remote
 
 ```sh
-git.exe push --progress "openshift" master:master
-
-...
+git push --force --progress "openshift" master:master
 ```
 
-3. Only once the Git push was succesful, add the MySQL 5.5 cartridge.
+You will get lots of logging including some failures. That's because we haven't yet added the MySQL cartridge. Normally we would add the MySQL cartridge before pushing, but if we do so, we encounter a bug in OpenShift, so bear with me.
+
+4. Only once the Git push has completed, add the MySQL 5.5 cartridge.
 
 If you add the MySQL cartridge before pushing the code changes, you run into an OpenShift bug:
-[Bug 1292701 - Install mysqlclient in Django scalable application](https://bugzilla.redhat.com/show_bug.cgi?id=1292701)
+[Bug 1292701 - Install mysqlclient in Django scalable application](https://bugzilla.redhat.com/show_bug.cgi?id=1292701), so make sure to push the repo first.
 
+5. Restart the OpenShift application.
 
-4. Restart the OpenShift application.
