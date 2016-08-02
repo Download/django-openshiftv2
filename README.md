@@ -1,16 +1,18 @@
 ﻿# Set up a local development environment (on Windows)
 
-1. Install [Python 3.5.2](https://www.python.org/download/releases/3.5.2/) | [Web installer](https://www.python.org/ftp/python/3.5.2/python-3.5.2-amd64-webinstall.exe).
-   OpenShift uses Python 3.3, but this gives many problems on Windows, so on Windows we use Python 3.5 instead.
-
-2. Open a command prompt and verify that Python is installed correctly
+## Install Python
+* Install [Python 3.5.2](https://www.python.org/download/releases/3.5.2/) | [Web installer](https://www.python.org/ftp/python/3.5.2/python-3.5.2-amd64-webinstall.exe).
+* Open a command prompt and verify that Python is installed correctly
 
 ```sh
 c:\ws>python --version
 Python 3.5.2
 ```
 
-3. Attempt to upgrade pip (version that comes bundled with Python 3.5.2 is old)
+> OpenShift uses Python 3.3, but this gives many problems on Windows, so on Windows we use Python 3.5 instead.
+
+
+* Attempt to upgrade pip (version that comes bundled with Python 3.5.2 is old)
 
 ```sh
 c:\ws>python -m pip install --upgrade pip
@@ -23,14 +25,15 @@ Installing collected packages: pip
 Successfully installed pip-8.1.2
 ```
 
-4. Verify that [pip](https://pip.pypa.io/en/stable/) (python installer package) is installed correctly
+* Verify that [pip](https://pip.pypa.io/en/stable/) (python installer package) is installed correctly
 
 ```sh
 c:\ws>pip --version
 pip 8.1.2 from c:\python\v3.5.2\lib\site-packages (python 3.5)
 ```
 
-5. Install [virtualenv](https://virtualenv.pypa.io/en/stable/installation/)
+## Install virtualenv
+* Install [virtualenv](https://virtualenv.pypa.io/en/stable/installation/)
 
 ```sh
 c:\ws>pip install virtualenv
@@ -40,7 +43,8 @@ Installing collected packages: virtualenv
 Successfully installed virtualenv-15.0.2
 ```
 
-6. Create a virtual environment: `virtualenv env`
+## Create a virtual environment
+* Run the command `virtualenv env`
 
 ```sh
 c:\ws>virtualenv env
@@ -49,7 +53,7 @@ New python executable in c:\ws\env\Scripts\python.exe
 Installing setuptools, pip, wheel...done.
 ```
 
-7. Browse into the newly created folder: `cd env`
+* Browse into the newly created folder: `cd env`
 
 ```sh
 c:\ws>cd env
@@ -57,7 +61,7 @@ c:\ws>cd env
 c:\ws\env>
 ```
 
-8. Activate the virtualenv: `Scripts\activate`
+* Activate the virtualenv: `Scripts\activate`
 
 ```sh
 c:\ws\env>Scripts\activate
@@ -65,7 +69,8 @@ c:\ws\env>Scripts\activate
 (env) c:\ws\env>
 ```
 
-9. Install [mysqlclient](https://pypi.python.org/pypi/mysqlclient)
+## Install mysqlclient
+* Install [mysqlclient](https://pypi.python.org/pypi/mysqlclient)
 
 ```sh
 (env) c:\ws\env>pip install mysqlclient
@@ -80,7 +85,8 @@ Installing collected packages: mysqlclient
 Successfully installed mysqlclient-1.3.7
 ```
 
-9. GIT [clone](https://git-scm.com/docs/git-clone) this project: `git clone git@github.com:Download/ba.git` (will create a folder `ba` within `env`)
+## Git clone this project
+* [Git clone](https://git-scm.com/docs/git-clone) this project: `git clone git@github.com:Download/ba.git` (will create a folder `ba` within `env`)
 
 ```sh
 (env) c:\ws\env>git clone git@github.com:Download/ba.git
@@ -92,7 +98,7 @@ remote: Total 35 (delta 0), reused 32 (delta 0), pack-reused 0
 Checking connectivity... done.
 ```
 
-10. Move into the project folder: `cd ba`
+* Move into the project folder: `cd ba`
 
 ```sh
 (env) c:\ws\env>cd ba
@@ -100,7 +106,8 @@ Checking connectivity... done.
 (env) c:\ws\env\ba>
 ```
 
-11. Install the project's dependencies: `pip install -r requirements.txt`
+## Install dependencies
+* Install the project's dependencies: `pip install -r requirements.txt`
 
 ```sh
 (env) c:\ws\env\ba>pip install -r requirements.txt
@@ -111,13 +118,14 @@ Installing collected packages: Django
 Successfully installed Django-1.8.14
 ```
 
-12. Make sure a DB named `ba` exists in MySQL (assuming you have a mysql user named `root` with password `secret`)
+## Setup the MySQL database
+* Make sure a DB named `ba` exists in MySQL (assuming you have a mysql user named `root` with password `secret`)
 
 ```sh
 (env) c:\ws\env\ba>mysql -uroot -psecret -e "CREATE DATABASE IF NOT EXISTS `ba` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
 ```
 
-13. Run `python manage.py migrate` to create the initial schema
+* Run `python manage.py migrate` to create the initial schema
 
 ```sh
 (env) c:\ws\env\ba>python manage.py migrate
@@ -142,9 +150,9 @@ Running migrations:
   Applying sessions.0001_initial... OK
 ```
 
-14. Create the admin user
+## Create the admin user
 
-You can either create the admin user using the Django `createsuperuser` command, as shown below:
+* You can either create the admin user using the Django `createsuperuser` command, as shown below:
 
 ```sh
 (env) c:\ws\env\ba>python manage.py createsuperuser
@@ -155,9 +163,8 @@ Password (again):
 Superuser created successfully.
 ```
 
-or you can use the `createadminuser.py` script. This script is called on deploy to openshift and
-checks whether an `admin` user already exists. If not, it will create one. On openshift it will
-use the MySQL password as the initial password, on local development environments it will use
+* or you can use the `createadminuser.py` script
+This script is called on deploy to openshift and checks whether an `admin` user already exists. If not, it will create one. On openshift it will use the MySQL password as the initial password, on local development environments it will use
 password `secret`:
 
 ```sh
@@ -168,7 +175,8 @@ PASSWORD:  secret
 User admin created succesfully.
 ```
 
-15. Start the server
+## Start the server
+* Run `python manage.py runserver`
 
 ```sh
 (env) c:\ws\env\ba>python manage.py runserver
@@ -181,16 +189,18 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CTRL-BREAK.
 ```
 
-16. Point your browser to http://127.0.0.1:8000/
+## Test the site
+* Point your browser to http://127.0.0.1:8000/
 
 
 # Setting up the OpenShift application
 
-Start by creating a Python 3.3 application named `ba` with Scaling set to `Scale with web traffic`. Once it completes, deploy this application to it by following the steps:
+Start by creating a Python 3.3 application named `ba` with Scaling set to `Scale with web traffic`. Once it completes, deploy this application to it by following these steps:
 
 ![screenshot](http://i.imgur.com/4Phj1y7.png)
 
-1. Copy the `Source Code` URL from the created application and add it as a remote named `openshift` to your GIT repo (`ba`). Then force-push this project's code to that remote.
+## Push this project to OpenShift
+* Copy the `Source Code` URL from the created application and add it as a remote named `openshift` to your GIT repo (`ba`). Then force-push this project's code to that remote.
 
 ```sh
 (env) c:\ws\env\ba>git push --force --progress "openshift" master:master
@@ -235,7 +245,6 @@ remote: Preparing build for deployment
 remote: Deployment id is 17b7602f
 remote: Activating deployment
 remote: Not starting cartridge haproxy because hot deploy is enabled
-remote: /var/lib/openshift/57a083990c1e66662e000159/app-root/runtime/repo/.openshift/action_hooks/deploy: line 1: ﻿#!/usr/bin/env: No such file or directory
 remote: Django and mysqlclient are installed correctly.
 remote: Add the MySQL cartridge, then push the repo again.
 remote: Not starting cartridge python because hot deploy is enabled
@@ -247,13 +256,91 @@ To ssh://57a083990c1e66662e000159@ba-catwalk.rhcloud.com/~/git/ba.git/
  + c972bfd...8dd0bc2 master -> master (forced update)
  ```
 
+## Add the MySQL 5.5 cartridge.
 
-You will get lots of logging including some failures. That's because we haven't yet added the MySQL cartridge. Normally we would add the MySQL cartridge before pushing, but if we do so, we encounter a bug in OpenShift, so bear with me.
+The next step is to add the MySQL cartridge. Normally we would add the MySQL cartridge before pushing, but if we do so, we encounter a [bug in OpenShift](https://bugzilla.redhat.com/show_bug.cgi?id=1292701), so bear with me. Once the MySQL cartridge has been added, we should write down the username and password OpenShift assigned for it. The same password will be used as the
+initial password for the Django admin user.
 
-4. Only once the Git push has completed, add the MySQL 5.5 cartridge.
 
-If you add the MySQL cartridge before pushing the code changes, you run into an OpenShift bug:
-[Bug 1292701 - Install mysqlclient in Django scalable application](https://bugzilla.redhat.com/show_bug.cgi?id=1292701), so make sure to push the repo first.
+## Push to openshift again
 
-5. Restart the OpenShift application.
+Make a small change (e.g. to this README) and commit. Then push your changes to OpenShift again.
+
+This time we do not need to force the update.
+
+```sh
+(env) c:\ws\env\ba>git push --progress "openshift" master:master
+Counting objects: 6, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (6/6), 2.03 KiB | 0 bytes/s, done.
+Total 6 (delta 4), reused 0 (delta 0)
+remote: Not stopping cartridge python because hot deploy is enabled
+remote: Syncing git content to other proxy gears
+remote: Building git ref 'master', commit 3ec54f0
+remote: Activating virtenv
+remote: Checking for pip dependency listed in requirements.txt file..
+...
+remote: Activating deployment
+remote: Not starting cartridge haproxy because hot deploy is enabled
+remote: MySQL is installed correctly.
+remote: Generating /var/lib/openshift/57a083990c1e66662e000159/.env/user_vars/DJANGO_SECRET_KEY
+remote: Registering app/wsgi.py in /var/lib/openshift/57a083990c1e66662e000159/.env/user_vars/OPENSHIFT_PYTHON_WSGI_APPLICATION
+remote: Executing 'python /var/lib/openshift/57a083990c1e66662e000159/app-root/runtime/repo/manage.py migrate --noinput'
+remote: Operations to perform:
+remote:   Synchronize unmigrated apps: messages, staticfiles
+remote:   Apply all migrations: auth, admin, sessions, contenttypes
+remote: Synchronizing apps without migrations:
+remote:   Creating tables...
+remote:     Running deferred SQL...
+remote:   Installing custom SQL...
+remote: Running migrations:
+remote:   Rendering model states... DONE
+remote:   Applying contenttypes.0001_initial... OK
+remote:   Applying auth.0001_initial... OK
+remote:   Applying admin.0001_initial... OK
+remote:   Applying contenttypes.0002_remove_content_type_name... OK
+remote:   Applying auth.0002_alter_permission_name_max_length... OK
+remote:   Applying auth.0003_alter_user_email_max_length... OK
+remote:   Applying auth.0004_alter_user_username_opts... OK
+remote:   Applying auth.0005_alter_user_last_login_null... OK
+remote:   Applying auth.0006_require_contenttypes_0002... OK
+remote:   Applying sessions.0001_initial... OK
+remote: Executing 'python /var/lib/openshift/57a083990c1e66662e000159/app-root/runtime/repo/manage.py collectstatic --noinput'
+...
+remote:
+remote: 62 static files copied to '/var/lib/openshift/57a083990c1e66662e000159/app-root/runtime/repo/static'.
+remote:
+remote: ============================================================
+remote: Creating admin user. Please note these credentials.
+remote: ------------------------------------------------------------
+remote: USERNAME:  admin
+remote: PASSWORD:  **********
+remote: ------------------------------------------------------------
+remote: User admin created succesfully.
+remote: ============================================================
+remote:
+remote: Deployment completed. Please restart the application for settings to take effect.
+remote: Not starting cartridge python because hot deploy is enabled
+remote: -------------------------
+remote: Git Post-Receive Result: success
+remote: Activation status: success
+remote: Deployment completed with status: success
+To ssh://57a083990c1e66662e000159@ba-catwalk.rhcloud.com/~/git/ba.git/
+   8dd0bc2..3ec54f0  master -> master
+```
+
+## Restart the app.
+Because [hot-deploy](https://blog.openshift.com/hot-deploying-php-on-openshift/) <sub><sup>(linked article is about PHP, but same principles apply)</sup></sub> is enabled on this project, to allow Django pick up on the changes we made, we need to manually restart the app on OpenShift.
+
+* Run `rhc restart-app -a ba`
+
+```sh
+(env) c:\ws\env\ba>rhc restart-app -a ba
+RESULT:
+ba restarted
+```
+
+## Test deployment
+* Point your browser at http://ba-catwalk.rhcloud.com/ (change to match your domain)
 
